@@ -34,7 +34,7 @@ public class InputOverlayActivity extends Activity {
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {
                     String userInput = input.getText().toString();
-                    //UnityPlayer.UnitySendMessage("Gexetr.RemBug.LogRemote", "ReceiveNegativeMessage", userInput);
+                    UnityPlayer.UnitySendMessage("Gexetr.RemBug.LogRemote", "ReceiveNegativeMessage", "cancel");
                     finish();
                 })
                 .show();

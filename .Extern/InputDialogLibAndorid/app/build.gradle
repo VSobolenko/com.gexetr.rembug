@@ -38,6 +38,9 @@ afterEvaluate {
         from aarPath
         into targetDir
         rename { aarName }
+        doFirst {
+            delete file("$targetDir/$aarName")
+        }
         dependsOn "assembleRelease"
     }
 }
