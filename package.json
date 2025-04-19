@@ -1,0 +1,18 @@
+{
+  "name": "com.gexetr.rembug",
+  "version": "1.0.0",
+  "displayName": "RemBug",
+  "unity": "2020.3",
+  "description": "Local Server for Debug.",
+  "documentationUrl": "https://github.com/VSobolenko/com.gexetr.rembug",
+  "changelogUrl": "https://github.com/VSobolenko/com.gexetr.rembug",
+  "licensesUrl": "https://github.com/VSobolenko/com.gexetr.rembug",
+  "author": {
+    "name": "Gexetr",
+    "url": "https://github.com/VSobolenko/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VSobolenko/com.gexetr.rembug.git"
+  }
+}

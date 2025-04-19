@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Отправить сообщение</title>
+    <script>
+        function updateFormAction() {
+            const url = document.getElementById('serverUrl').value;
+            document.getElementById('messageForm').action = url;
+        }
+    </script>
+</head>
+<body>
+    <h1>Отправить сообщение на сервер</h1>
+    
+    <label for="serverUrl">URL сервера:</label>
+    <input type="text" id="serverUrl" value="http://192.168.0.112:8009/" onchange="updateFormAction()" />
+    
+    <form id="messageForm" action="http://192.168.43.236:8009/" method="POST">
+        <label for="message">Введите сообщение:</label>
+        <input type="text" id="message" name="message" required />
+        <button type="submit">Отправить</button>
+    </form>
+</body>
+</html>

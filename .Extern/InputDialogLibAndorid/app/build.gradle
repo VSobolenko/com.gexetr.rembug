@@ -1,0 +1,43 @@
+apply plugin: 'com.android.library'
+
+android {
+    namespace 'com.gexetr.inputdialoglib'
+    compileSdkVersion 33
+
+    defaultConfig {
+        minSdkVersion 22
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_11
+    }
+}
+
+dependencies {
+    compileOnly fileTree(dir: 'src/main/java/libs', include: ['*.jar']) // compileOnly files('libs/classes.jar')
+}
+
+afterEvaluate {
+    def aarName = "inputdialoglib.aar"
+    def aarPath = "$buildDir/outputs/aar/$aarName"
+    def targetDir = "../../../Runtime/Plugins/Android"
+
+    tasks.register("deployToPackageLocal", Copy) {
+        from aarPath
+        into targetDir
+        rename { aarName }
+        dependsOn "assembleRelease"
+    }
+}
