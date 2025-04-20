@@ -1,3 +1,18 @@
+# Installation
+
+- Via a git link in the PackageManager 
+  ```
+  https://github.com/VSobolenko/com.gexetr.rembug.git
+  ```
+- Editing of `Packages/manifest.json`
+  ```
+  "com.gexetr.rembug": "https://github.com/VSobolenko/com.rembug.git,
+  ```
+- Git Submodule
+  ```sh
+  git submodule add https://github.com/VSobolenko/com.gexetr.rembug Packages/com.gexetr.rembug
+  ```
+  
 # Rembug Integration (Experimental)
 
 > ⚠️ This project is experimental and currently under development. Use it with caution — bugs and changes are expected.  
