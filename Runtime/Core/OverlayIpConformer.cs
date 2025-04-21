@@ -44,13 +44,27 @@ public class OverlayIpConformer : IDisposable
 
     private void ShowOverlayInputDialog()
     {
-        if (Application.isEditor)
-        {
-            FinishReceiveMessage("cancel");
-            return;
-        }
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         
-#if UNITY_ANDROID
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPaused = true;
+#endif
+        new Thread(() =>
+        {
+            var result = InputDialogLibWindows.TextInput.ShowInputWindow();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                UnityEditor.EditorApplication.isPaused = false;
+            };
+#endif
+            _cts.SetResult(result);
+        })
+        {
+            IsBackground = true,
+            Name = "InputThread"
+        }.Start();
+#elif UNITY_ANDROID
         using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
         using (var activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
         using (var launcher = new AndroidJavaClass("com.gexetr.inputdialoglib.InputOverlayLauncher"))
