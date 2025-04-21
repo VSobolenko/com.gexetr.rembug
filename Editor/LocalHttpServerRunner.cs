@@ -1,25 +1,27 @@
-using System.Diagnostics;
 using System.IO;
 using UnityEditor;
+using UnityEngine;
+using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace RemBug
 {
 public static class LocalHttpServerRunner
 {
-    private const string ProjectRelativePath = "Packages/com.gexetr.rembug/.Extern/Server/LocalHttpServer";
     private const string ExeName = "LocalHttpServer.exe";
 
     [MenuItem("Tools/GCL/Run Local HTTP Server")]
     public static void RunServer()
     {
-        string projectPath = Path.Combine(Directory.GetCurrentDirectory(), ProjectRelativePath);
+        if (IsPackageFound("Packages/com.gexetr.rembug/Editor/Gexetr.RemBug.Editor.asmdef", out var packageInfo) == false)
+            return;
+        string projectPath = Path.Combine(packageInfo.resolvedPath, ".Extern/Server/LocalHttpServer");
         string csprojPath = Path.Combine(projectPath, "LocalHttpServer.csproj");
         string exePath = Path.Combine(projectPath, "bin", "Release", ExeName);
 
         if (!File.Exists(csprojPath))
         {
             EditorUtility.DisplayDialog("Error", $"Project file not found:\n{csprojPath}", "OK");
-            UnityEngine.Debug.LogError($"Project file not found:\n{csprojPath}");
+            Debug.LogError($"Project file not found:\n{csprojPath}");
             return;
         }
 
@@ -29,9 +31,9 @@ public static class LocalHttpServerRunner
             return;
         }
 
-        var buildProcess = new Process
+        var buildProcess = new System.Diagnostics.Process
         {
-            StartInfo = new ProcessStartInfo
+            StartInfo = new System.Diagnostics.ProcessStartInfo
             {
                 FileName = "dotnet",
                 Arguments = $"build \"{csprojPath}\" -c Release",
@@ -50,15 +52,15 @@ public static class LocalHttpServerRunner
 
         if (buildProcess.ExitCode != 0)
         {
-            UnityEngine.Debug.LogError("Build failed:\n" + error);
+            Debug.LogError("Build failed:\n" + error);
             return;
         }
 
-        UnityEngine.Debug.Log("Build succeeded:\n" + output);
+        Debug.Log("Build succeeded:\n" + output);
 
         if (!File.Exists(exePath))
         {
-            UnityEngine.Debug.LogError($"Executable not found:\n{exePath}");
+            Debug.LogError($"Executable not found:\n{exePath}");
             return;
         }
 
@@ -69,7 +71,7 @@ public static class LocalHttpServerRunner
     {
         try
         {
-            var startInfo = new ProcessStartInfo
+            var startInfo = new System.Diagnostics.ProcessStartInfo
             {
                 FileName = exePath,
                 Verb = "runas", // run as administrator
@@ -77,13 +79,22 @@ public static class LocalHttpServerRunner
                 WorkingDirectory = Path.GetDirectoryName(exePath)
             };
 
-            Process.Start(startInfo);
-            UnityEngine.Debug.Log("Server started!");
+            System.Diagnostics.Process.Start(startInfo);
+            Debug.Log("Server started!");
         }
         catch (System.Exception e)
         {
-            UnityEngine.Debug.LogError("Failed to start LocalHttpServer:\n" + e.Message);
+            Debug.LogError("Failed to start LocalHttpServer:\n" + e.Message);
         }
+    }
+    
+    private static bool IsPackageFound(string packageAnchor, out PackageInfo packageInfo)
+    {
+        packageInfo = PackageInfo.FindForAssetPath(packageAnchor);
+        if (packageInfo == null)
+            Debug.LogWarning($"[RemBug] Package not found in path: " + packageAnchor);
+
+        return packageInfo != null;
     }
 }
 }
