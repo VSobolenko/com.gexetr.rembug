@@ -2,7 +2,7 @@
 
     <application>
         <activity
-            android:name="com.gexetr.inputdialoglib.InputOverlayActivity"
+            android:name="com.gexetr.inputdialoglib.OverlayInputDialogActivity"
             android:launchMode="singleInstance"
             android:excludeFromRecents="true"
             android:taskAffinity="" />

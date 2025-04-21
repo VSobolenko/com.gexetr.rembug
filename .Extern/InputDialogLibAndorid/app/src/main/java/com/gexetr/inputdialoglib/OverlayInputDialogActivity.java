@@ -8,10 +8,14 @@ import android.widget.EditText;
 
 import com.unity3d.player.UnityPlayer;
 
-public class InputOverlayActivity extends Activity {
+public class OverlayInputDialogActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String gameObject = getIntent().getStringExtra("game_object");
+        String positiveCallback = getIntent().getStringExtra("callback_method_positive");
+        String negativeCallback = getIntent().getStringExtra("callback_method_negative");
 
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
@@ -29,12 +33,12 @@ public class InputOverlayActivity extends Activity {
                 .setCancelable(false)
                 .setPositiveButton("OK", (dialog, which) -> {
                     String userInput = input.getText().toString();
-                    UnityPlayer.UnitySendMessage("Gexetr.RemBug.LogRemote", "ReceivePositiveMessage", userInput);
+                    UnityPlayer.UnitySendMessage(gameObject, positiveCallback, userInput);
                     finish();
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {
                     String userInput = input.getText().toString();
-                    UnityPlayer.UnitySendMessage("Gexetr.RemBug.LogRemote", "ReceiveNegativeMessage", "cancel");
+                    UnityPlayer.UnitySendMessage(gameObject, negativeCallback, "cancel");
                     finish();
                 })
                 .show();

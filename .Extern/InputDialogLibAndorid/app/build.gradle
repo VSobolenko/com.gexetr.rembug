@@ -31,7 +31,8 @@ dependencies {
 
 afterEvaluate {
     def aarName = "inputdialoglib.aar"
-    def aarPath = "$buildDir/outputs/aar/$aarName"
+    def aarNameSource = "app-release.aar"
+    def aarPath = "$buildDir/outputs/aar/$aarNameSource"
     def targetDir = "../../../Runtime/Plugins/Android"
 
     tasks.register("deployToPackageLocal", Copy) {
@@ -40,6 +41,9 @@ afterEvaluate {
         rename { aarName }
         doFirst {
             delete file("$targetDir/$aarName")
+        }
+        doLast {
+            println "AAR path: $targetDir/$aarName"
         }
         dependsOn "assembleRelease"
     }

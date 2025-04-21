@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RemBug
 {
-public class MessageReceiver : MonoBehaviour
+internal class ExternMessageReceiver : MonoBehaviour
 {
     public event Action<string> OnMessageReceived;
 

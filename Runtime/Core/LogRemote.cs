@@ -7,7 +7,7 @@ namespace RemBug
 public static class LogRemote
 {
     private static HttpSender _server;
-    private static int _attemptConnect = 0;
+    private static int _attemptConnect;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatic()
@@ -35,33 +35,26 @@ public static class LogRemote
         }
     }
 
+    public static void ResetAttemptCount() => _attemptConnect = 0;
+
+    public static async Task SetupEndPoint()
+    {
+        using (var conformer = new OverlayIpConformer())
+        {
+            var ip = await conformer.GetInputText();
+
+            if (string.IsNullOrEmpty(ip))
+                return;
+            _server = new HttpSender($"http://{ip}:8009/", "POST");
+        }
+    }
+    
     private static async Task TrySetupEndPoint()
     {
-        if (_server != null || _attemptConnect > 2)
+        if (_server != null || _attemptConnect > 1)
             return;
         _attemptConnect++;
-
-        var conformer = new OverlayIpConformer();
-        var ip = await conformer.GetIpAddress();
-
-        if (string.IsNullOrEmpty(ip))
-            return;
-        _server = new HttpSender($"http://{ip}:8009/", "POST");
-    }
-
-    // Feature in progress
-    private static void ShowAlertPopup()
-    {
-        using (AndroidJavaClass pluginClass = new AndroidJavaClass("com.gexetr.inputdialog.InputDialogPlugin"))
-        {
-            pluginClass.CallStatic(
-                "showInputDialog",
-                "GameObjectNameToReceiveMessage",
-                "OnInputReceived", // method receive message
-                "Header",
-                "Enter text:"
-            );
-        }
+        await SetupEndPoint();
     }
 }
 }

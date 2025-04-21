@@ -3,8 +3,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace RemBug
-{
-public class HttpSender
+{ 
+internal class HttpSender
 {
     private readonly string _url;
     private readonly HttpMethod _method;
