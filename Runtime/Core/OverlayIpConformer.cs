@@ -8,6 +8,11 @@ namespace RemBug
 {
 public class OverlayIpConformer : IDisposable
 {
+#if UNITY_WEBGL
+    [System.Runtime.InteropServices.DllImport("__Internal")]
+    private static extern void ShowTextInput(string gameObject, string positiveMethod, string negativeMethod);
+#endif
+    
     private readonly string _gameObjectReceiverName;
     private readonly ExternMessageReceiver _receiver;
     private TaskCompletionSource<string> _cts;
@@ -64,6 +69,10 @@ public class OverlayIpConformer : IDisposable
             IsBackground = true,
             Name = "InputThread"
         }.Start();
+#elif UNITY_WEBGL
+        ShowTextInput(_gameObjectReceiverName,
+            nameof(ExternMessageReceiver.ReceivePositiveMessage),
+            nameof(ExternMessageReceiver.ReceiveNegativeMessage));
 #elif UNITY_ANDROID
         using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
         using (var activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
@@ -74,6 +83,8 @@ public class OverlayIpConformer : IDisposable
                 nameof(ExternMessageReceiver.ReceivePositiveMessage),
                 nameof(ExternMessageReceiver.ReceiveNegativeMessage));
         }
+#else
+        Debug.LogWarning("IP Unsupported platform");
 #endif
     }
 

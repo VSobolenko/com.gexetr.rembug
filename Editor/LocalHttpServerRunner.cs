@@ -5,7 +5,7 @@ using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace RemBug
 {
-public static class LocalHttpServerRunner
+    public static class LocalHttpServerRunner
 {
     private const string ExeName = "LocalHttpServer.exe";
 
