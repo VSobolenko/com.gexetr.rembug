@@ -48,7 +48,7 @@ public static class LogRemote
                 Debug.LogWarning("Null input ip not allowed!");
                 return;
             }
-            _server = new HttpSender($"https://{ip}:8009/", "POST");
+            _server = new HttpSender($"http://{ip}:8009/", "POST");
         }
     }
     
