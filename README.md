@@ -2,18 +2,18 @@
 
 - Via a git link in the PackageManager 
   ```
-  https://github.com/VSobolenko/com.gexetr.rembug.git
+  https://github.com/VSobolenko/com.gexetr.remotedebug.git
   ```
 - Editing of `Packages/manifest.json`
   ```
-  "com.gexetr.rembug": "https://github.com/VSobolenko/com.rembug.git,
+  "com.gexetr.rembug": "https://github.com/VSobolenko/com.remotedebug.git,
   ```
 - Git Submodule
   ```sh
-  git submodule add https://github.com/VSobolenko/com.gexetr.rembug Packages/com.gexetr.rembug
+  git submodule add https://github.com/VSobolenko/com.gexetr.remotedebug Packages/com.gexetr.remotedebug
   ```
   
-# Rembug Integration (Experimental)
+# Remote Debug Integration (Experimental)
 
 > ⚠️ This project is experimental and currently under development. Use it with caution — bugs and changes are expected.  
 > ✔️ Tested on **Unity 2022.3.46f1**.
