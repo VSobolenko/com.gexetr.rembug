@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
-namespace RemBug
+namespace GameEditor.Debugging
 {
     public static class LocalHttpServerRunner
 {
@@ -12,7 +12,7 @@ namespace RemBug
     [MenuItem("Tools/GCL/Run Local HTTP Server")]
     public static void RunServer()
     {
-        if (IsPackageFound("Packages/com.gexetr.rembug/Editor/Gexetr.RemBug.Editor.asmdef", out var packageInfo) == false)
+        if (IsPackageFound("Packages/com.gexetr.remotedebug/Editor/Gexetr.RemoteDebug.Editor.asmdef", out var packageInfo) == false)
             return;
         string projectPath = Path.Combine(packageInfo.resolvedPath, ".Extern/Server/LocalHttpServer");
         string csprojPath = Path.Combine(projectPath, "LocalHttpServer.csproj");

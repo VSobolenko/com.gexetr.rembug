@@ -1,6 +1,6 @@
 {
     "name": "Gexetr.RemBug.Editor",
-    "rootNamespace": "RemBug",
+    "rootNamespace": "GameEditor.Debugging",
     "references": [],
     "includePlatforms": [
         "Editor"

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace RemBug
+namespace Game.Debugging
 {
 public class OverlayIpConformer : IDisposable
 {
@@ -85,6 +85,7 @@ public class OverlayIpConformer : IDisposable
         }
 #else
         Debug.LogWarning("IP Unsupported platform");
+        _cts.SetResult(string.Empty);
 #endif
     }
 

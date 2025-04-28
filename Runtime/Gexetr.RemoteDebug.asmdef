@@ -1,6 +1,6 @@
 {
-    "name": "Gexetr.RemBug",
-    "rootNamespace": "RemBug",
+    "name": "Gexetr.RemoteDebug",
+    "rootNamespace": "Game.Debugging",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

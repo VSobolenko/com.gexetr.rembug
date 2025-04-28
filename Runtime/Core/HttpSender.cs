@@ -1,16 +1,24 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using UnityEngine;
+using Ping = System.Net.NetworkInformation.Ping;
 
-namespace RemBug
+namespace Game.Debugging
 { 
 internal class HttpSender
 {
     private readonly string _url;
 #if !UNITY_WEBGL
     private readonly HttpMethod _method;
-    private static readonly HttpClient Client = new();
+    private static readonly HttpClient Client = new()
+    {
+        Timeout = TimeSpan.FromSeconds(10),
+    };
 #endif
 
     public HttpSender(string url, string method)
@@ -51,11 +59,55 @@ internal class HttpSender
             Content = new StringContent(content, Encoding.UTF8, "text/plain")
         };
 
-        var response = await Client.SendAsync(request);
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            var response = await Client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
 
-        return await response.Content.ReadAsStringAsync();
+            return await response.Content.ReadAsStringAsync();
+        }
+        catch (Exception e)
+        {
+            Debug.Log($"[RemoteDebug] Error to {_url} with message: " + e.Message);
+            return string.Empty;
+        }
 #endif
+    }
+    
+    public async Task<bool> Ping(int timeoutMilliseconds = 3000)
+    {
+        try
+        {
+            var host = ExtractHost(_url);
+            if (IPAddress.TryParse(host, out var ipAddress) == false)
+                return false;
+
+            if (!(ipAddress.AddressFamily == AddressFamily.InterNetwork ||
+                  ipAddress.AddressFamily == AddressFamily.InterNetworkV6))
+                return false;
+            
+            using (var ping = new Ping())
+            {
+                var reply = await ping.SendPingAsync(ipAddress, timeoutMilliseconds);
+                return reply.Status == IPStatus.Success;
+            }
+        }
+        catch
+        {
+            return false;
+        }
+    }
+    
+
+    private static string ExtractHost(string hostOrUrl)
+    {
+        if (hostOrUrl.StartsWith("http://") || hostOrUrl.StartsWith("https://"))
+        {
+            var uri = new Uri(hostOrUrl);
+            return uri.Host;
+        }
+
+        return hostOrUrl;
     }
 }
 }

@@ -1,18 +1,18 @@
 {
-  "name": "com.gexetr.rembug",
+  "name": "com.gexetr.remotedebug",
   "version": "1.0.0",
-  "displayName": "RemBug",
+  "displayName": "Remote Debug",
   "unity": "2020.3",
   "description": "Local Server for Debug.",
-  "documentationUrl": "https://github.com/VSobolenko/com.gexetr.rembug",
-  "changelogUrl": "https://github.com/VSobolenko/com.gexetr.rembug",
-  "licensesUrl": "https://github.com/VSobolenko/com.gexetr.rembug",
+  "documentationUrl": "https://github.com/VSobolenko/com.gexetr.remotedebug",
+  "changelogUrl": "https://github.com/VSobolenko/com.gexetr.remotedebug",
+  "licensesUrl": "https://github.com/VSobolenko/com.gexetr.remotedebug",
   "author": {
     "name": "Gexetr",
     "url": "https://github.com/VSobolenko/"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/VSobolenko/com.gexetr.rembug.git"
+    "url": "https://github.com/VSobolenko/com.gexetr.remotedebug.git"
   }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace RemBug
+namespace Game.Debugging
 {
 internal class ExternMessageReceiver : MonoBehaviour
 {

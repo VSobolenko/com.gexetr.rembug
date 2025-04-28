@@ -3,7 +3,7 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace RemBug
+namespace GameEditor.Debugging
 {
     public class CheckHttpSettingPostBuild : IPostprocessBuildWithReport
     {

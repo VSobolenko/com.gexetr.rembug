@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -25,9 +26,10 @@ namespace LocalHttpServer
 
         private static async Task Run()
         {
-            int port = 8009;
+            const int port = 8009;
+            var url = GetUrl("*", port);
             var listener = new HttpListener();
-            listener.Prefixes.Add($"http://*:{port}/");
+            listener.Prefixes.Add(url);
 
             string exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string logFilePath = Path.Combine(exeDirectory, "logger.log");
@@ -37,9 +39,11 @@ namespace LocalHttpServer
 
             listener.Start();
 
-            string localIP = GetLocalIpAddress();
+            var localIp = GetLocalIpAddress();
+
             Console.WriteLine($"Server started!");
-            Console.WriteLine($"IP: {localIP}");
+            Console.WriteLine($"URL: {GetUrl(localIp, port)}");
+            Console.WriteLine($"IP: {localIp}");
             Console.WriteLine($"Port: {port}");
 
             while (true)
@@ -58,7 +62,7 @@ namespace LocalHttpServer
                 }
 
                 string decodedText = WebUtility.HtmlDecode(receivedText);
-                Console.WriteLine($"Receive message: {decodedText}");
+                Console.WriteLine($"[LOG]{decodedText}");
 
                 using (var writer = new StreamWriter(logFilePath, append: true, encoding: Encoding.UTF8))
                 {
@@ -88,5 +92,7 @@ namespace LocalHttpServer
             }
             return "127.0.0.1";
         }
+
+        private static string GetUrl(string ip, int port) => $"http://{ip}:{port}/";
     }
 }
