@@ -59,13 +59,13 @@ public class LogRemote : ILogger
         return SetupEndPoint();
     }
 
-    public static async Task<bool> SetupEndPoint()
+    public static async Task<bool> SetupEndPoint(string helloMessage = null)
     {
         if (Disable)
             return false;
         
         if (_server != null)
-            return true;
+            return false;
         
         _attemptConnect++;
         
@@ -81,14 +81,17 @@ public class LogRemote : ILogger
             }
             _server = new HttpSender(url, "POST");
 
-            var pingResult = await _server.Ping();
-            if (pingResult == false)
+            var pingSuccess = await _server.Ping();
+            if (pingSuccess == false)
             {
-                Debug.LogWarning($"[RemoteDebug] Server not response!{url}");
+                Debug.LogWarning($"[RemoteDebug] Server not response! {url}");
                 _server = null;
             }
 
-            return pingResult;
+            if (pingSuccess && !string.IsNullOrEmpty(helloMessage))
+                await _server.SendAsync(helloMessage);
+
+            return pingSuccess;
         }
     }
 
